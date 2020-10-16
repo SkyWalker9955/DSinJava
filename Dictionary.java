@@ -85,7 +85,54 @@ class LinkMe{
 		curr = front;
 		while(curr != null) {
 			System.out.println(curr.wordCode + "\t" + curr.word);
+			if (curr.meaning == null) {
+				System.out.print("");
+			}
+			else if (curr.meaning != null) {
+				System.out.println("\t\t" + curr.meaning);
+			}
 			curr=curr.next;
+		}
+	}
+	void deleteBYwordCode(int num) {
+		Node curr, prev; 
+		curr = front;
+		prev = front;
+		boolean flag = true;
+		while(flag) {
+			if (num != curr.wordCode) {
+				prev = curr;
+				curr = curr.next;
+			}
+			else if (num == 0) {
+				front = front.next;
+				flag = false;
+			}
+			
+			else if (num == curr.wordCode && num > 0) {
+				System.out.println(curr.wordCode);
+				prev.next = curr.next;
+				curr.next = null;
+				flag = false;
+			}
+		}
+	}
+	
+	void addMeaning (String meaning, int wordCode) {
+		Node curr, temp;
+		curr = front;
+		temp = front;
+		
+		boolean flag = true;
+		while (flag) {
+			if (wordCode != curr.wordCode) {
+				temp = curr;
+				curr = curr.next;
+			}
+			else if (wordCode == curr.wordCode) {
+				curr.meaning = meaning;
+				flag = false;
+			}
 		}
 	}
 }
@@ -100,7 +147,8 @@ public class Dictionary {
 		String sLow = s.toLowerCase();
 		int wordCode = 0;
 		if (s.length() >= 3) {
-			wordCode = ((sLow.charAt(0) - 'a') * 676) + ((sLow.charAt(1) - 'a') * 26) + ((sLow.charAt(2) - 'a') * 1);
+			wordCode = ((sLow.charAt(0) - 'a') * 676) + ((sLow.charAt(1) - 'a') * 26) + 
+					((sLow.charAt(2) - 'a') * 1);
 		}
 		else if (s.length() == 2) {
 			wordCode = ((sLow.charAt(0) - 'a') * 676) + ((sLow.charAt(1) - 'a') * 26) + 0;
@@ -131,6 +179,19 @@ public class Dictionary {
 		int newWordCode = makeWordCode(newWord.toLowerCase());
 		LL.insert(newWordCode, newWord);
 		
+		LL.printLL();
+		
+		//Delete Node
+		System.out.println("\nDelete word: ");
+		int deleteCode = input.nextInt();
+		LL.deleteBYwordCode(deleteCode);
+		LL.printLL();
+		
+		//Add meaning
+		System.out.println("\nFirst insert a wordCode and then a meaning you want to assign to that word: ");
+		int wordCode1 = input.nextInt();
+		String wordMeaning = input.next();
+		LL.addMeaning(wordMeaning, wordCode1);
 		LL.printLL();
 	}
 }
